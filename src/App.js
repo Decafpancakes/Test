@@ -4,7 +4,6 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import List from '@material-ui/core/List';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
@@ -24,11 +23,15 @@ import BarChartIcon from "@material-ui/icons/BarChart";
 import LayersIcon from "@material-ui/icons/Layers";
 import AssignmentIcon from "@material-ui/icons/Assignment";
 import { Inbox } from '@material-ui/icons';
-import SimpleLineChart from "./SimpleLineChart";
-import SimpleTable from "./SimpleTable";
+import { BrowserRouter, Route, Link, Switch} from "react-router-dom";
+import "bootstrap/dist/css/bootstrap.min.css";
+import NewOrder from "./components/Orders";
+import Home from "./components/Home";
+import Clients from "./components/Clients";
 
 const drawerWidth = 240;
 
+//All Styling
 const useStyles = makeStyles((theme) => ({
   
   root: {
@@ -100,14 +103,16 @@ const useStyles = makeStyles((theme) => ({
   tableContainer: {
     height: 320
   },
-
   content: {
     flexGrow: 1,
     padding: theme.spacing(3),
   },
 }));
+//End Styling
 
 
+
+//Drawer/Appbar
 export default function MiniDrawer() {
   const classes = useStyles();
   const theme = useTheme();
@@ -122,6 +127,7 @@ export default function MiniDrawer() {
   };
 
   return (
+    
     <div className={classes.root}>
       <CssBaseline />
       <AppBar
@@ -131,9 +137,6 @@ export default function MiniDrawer() {
         })}
       >
 
-
-
-   
         <Toolbar>
           <IconButton
             color="inherit"
@@ -153,10 +156,9 @@ export default function MiniDrawer() {
         </Toolbar>
       </AppBar>
 
-
-
-
+      <BrowserRouter>
       <Drawer
+      
         variant="permanent"
         className={clsx(classes.drawer, {
           [classes.drawerOpen]: open,
@@ -174,33 +176,41 @@ export default function MiniDrawer() {
             {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
           </IconButton>
         </div>
+
+        
         <Divider />
+        <Link to="/Home" className={classes.link}>
         <ListItem button>
           <ListItemIcon>
             <DashboardIcon />
           </ListItemIcon>
           <ListItemText primary="Dashboard" />
         </ListItem>
-        
+        </Link>
+
+        <Link to="/Orders" className={classes.link}>
         <ListItem button >
           <ListItemIcon>
             <ShoppingCartIcon />
           </ListItemIcon>
           <ListItemText primary="Orders" />
-        </ListItem> 
+        </ListItem>
+        </Link>
 
+      <Link to="/Clients" className={classes.link}>
       <ListItem button>
         <ListItemIcon>
           <PeopleIcon />
         </ListItemIcon>
-        <ListItemText primary="Customers" />
+        <ListItemText primary="Clients" />
       </ListItem>
+      </Link>
 
       <ListItem button>
         <ListItemIcon>
           <BarChartIcon />
         </ListItemIcon>
-        <ListItemText primary="Reports" />
+        <ListItemText primary="Assets" />
       </ListItem>
       
       <ListItem button>
@@ -209,10 +219,19 @@ export default function MiniDrawer() {
         </ListItemIcon>
         <ListItemText primary="Integrations" />
       </ListItem>
-      </Drawer>
-      
 
-      <main className={classes.content}>
+      </Drawer>
+
+
+      <Switch>
+           <Route path ="/Home" component={Home}/> 
+            <Route path ="/Orders" component={NewOrder}/>
+            <Route path ="/Clients" component={Clients}/>
+        </Switch>
+
+      </BrowserRouter>
+    
+      {/* <main className={classes.content}>
           <div className={classes.appBarSpacer} />
           <Typography variant="h4" gutterBottom component="h2">
             Orders
@@ -226,7 +245,11 @@ export default function MiniDrawer() {
           <div className={classes.tableContainer}>
             <SimpleTable />
           </div>
-        </main>
+        </main> */}
+
+      
+        
     </div>
+    
   );
 }
